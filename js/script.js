@@ -23,6 +23,7 @@
 const countdownEl = document.getElementById("countdown");
 const numbersListEl = document.getElementById("numbers-list");
 const answersForm = document.getElementById("answers-form");
+const inputGroup = document.getElementById("input-group");
 // uso querySelectorAll per prendere tutti gli input che hanno classe "form-control" e genero una lista
 const inputList = document.querySelectorAll(".form-control");
 
@@ -56,6 +57,10 @@ const arrayRandomNumber = [
 
 console.log(arrayRandomNumber);
 
+// assegno i valori random alla lista di input
 for (let i = 0; i < arrayRandomNumber.length; i++) {
-  console.log(inputList.push(arrayRandomNumber[i]));
+  const inputListEl = inputList[i];
+  //assegno al valore di inpitListEl uno dei valori random generati
+  inputListEl.value = arrayRandomNumber[i];
+  console.log(inputListEl);
 }
