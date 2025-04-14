@@ -21,17 +21,42 @@
 //   quanti numeri ci sono in comune tra i due array"
 
 const countdownEl = document.getElementById("countdown");
-const numbersListEl = document.getElementById("numbers-list");
+const numbersList = document.getElementById("numbers-list");
+const numberListEl = document.querySelectorAll(".number-el");
 const answersForm = document.getElementById("answers-form");
 const inputGroup = document.getElementById("input-group");
 // uso querySelectorAll per prendere tutti gli input che hanno classe "form-control" e genero una lista
 const inputList = document.querySelectorAll(".form-control");
+const sendButton = document.getElementById("send-button");
+const message = document.getElementById("message");
+
+//secondi per memorizzare i numeri
+let remainingMs = 10;
 
 // # FUNZIONI
+
+// ? GENERA NUMERI RANDOM
 
 const generateRandomNUmber = (min, max) => {
   const randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
   return randomNumber;
+};
+
+// ? FUNZIONE CHE IL COUNTDOWN
+
+const handleCountdown = () => {
+  remainingMs--;
+  countdownEl.textContent = remainingMs;
+
+  if (remainingMs <= 0) {
+    clearInterval(remainSecond);
+    numbersList.classList.add("d-none");
+    answersForm.classList.remove("d-none");
+    countdownEl.textContent = "";
+  }
+
+  console.warn(`Rimangono solo ${remainingMs} secondi`);
+  return remainingMs;
 };
 
 // # ARRAY DI 5 NUMERI CASUALI
@@ -40,12 +65,6 @@ const numberTwo = generateRandomNUmber(1, 50);
 const numberThree = generateRandomNUmber(1, 50);
 const numberFour = generateRandomNUmber(1, 50);
 const numberFive = generateRandomNUmber(1, 50);
-
-// console.log(numberOne);
-// console.log(numberTwo);
-// console.log(numberThree);
-// console.log(numberFour);
-// console.log(numberFive);
 
 const arrayRandomNumber = [
   numberOne,
@@ -57,10 +76,29 @@ const arrayRandomNumber = [
 
 console.log(arrayRandomNumber);
 
-// assegno i valori random alla lista di input
+// ## VISUALIZZARE IN PAGINA 5 NUMERI CASUALI
+
+// assegno i valori random alla lista di numeri
 for (let i = 0; i < arrayRandomNumber.length; i++) {
-  const inputListEl = inputList[i];
-  //assegno al valore di inpitListEl uno dei valori random generati
-  inputListEl.value = arrayRandomNumber[i];
-  console.log(inputListEl);
+  numberListEl[i].textContent = arrayRandomNumber[i];
+  console.log(`I numeri da memorizzare sono:  ${numberListEl[i].textConten}`);
 }
+let remainSecond = setInterval(handleCountdown, 1000);
+console.log(remainSecond);
+console.log(handleCountdown);
+
+// # AL CLICK DEL BOTTONE
+
+sendButton.addEventListener("click", function () {
+  for (let i = 0; i < arrayRandomNumber.length; i++) {
+    let sum = 0;
+    const numberGuessed = [];
+    if (inputList.value === arrayRandomNumber[i]) {
+      sum += 1;
+      const guessed = numberGuessed.push(arrayRandomNumber[i]);
+      message.textContent = `Hai indovinato ${sum} numeri! (${guessed})`;
+    } else {
+      message.textContent = `Non hai indovinato nessun numero!`;
+    }
+  }
+});
